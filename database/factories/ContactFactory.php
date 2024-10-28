@@ -19,6 +19,7 @@ class ContactFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
+            'type' => 'personal',
             'cpf' => $this->faker->unique()->numerify('###########'),
             'phone' => $this->faker->phoneNumber,
             'street' => $this->faker->streetName,

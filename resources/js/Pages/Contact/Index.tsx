@@ -7,6 +7,7 @@ import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 import ContactList from '@/Components/Contact/ContactList';
+import { Contact } from '@/types';
 
 interface User {
     id: number;
@@ -18,35 +19,17 @@ interface AuthProps {
     auth?: {
         user: User;
     };
-    contacts?: []
+    contacts: any
 }
-const contacts = [
-    { id: 1, name: 'John Doe', type: 'Personal' },
-    { id: 2, name: 'Jane Smith', type: 'Business' },
-    { id: 3, name: 'Bob Johnson', type: 'Personal' },
-    { id: 4, name: 'John Doe', type: 'Personal' },
-    { id: 5, name: 'Jane Smith', type: 'Business' },
-    { id: 6, name: 'Bob Johnson', type: 'Personal' },
-    { id: 7, name: 'John Doe', type: 'Personal' },
-    { id: 8, name: 'Jane Smith', type: 'Business' },
-    { id: 9, name: 'Bob Johnson', type: 'Personal' },
-    { id: 10, name: 'John Doe', type: 'Personal' },
-    { id: 12, name: 'Jane Smith', type: 'Business' },
-    { id: 13, name: 'Bob Johnson', type: 'Personal' },
-    { id: 14, name: 'John Doe', type: 'Personal' },
-    { id: 15, name: 'Jane Smith', type: 'Business' },
-    { id: 16, name: 'Bob Johnson', type: 'Personal' }
-
-];
-export default function Index({ auth }: AuthProps) {
+export default function Index({ auth, contacts }: AuthProps) {
 
     const [currentPage, setCurrentPage] = useState(1);
     const contactsPerPage = 5;
-    const totalPages = Math.ceil(contacts.length / contactsPerPage);
+    const totalPages = Math.ceil(contacts.data.length / contactsPerPage);
 
     const indexOfLastContact = currentPage * contactsPerPage;
     const indexOfFirstContact = indexOfLastContact - contactsPerPage;
-    const currentContacts = contacts.slice(indexOfFirstContact, indexOfLastContact);
+    const currentContacts = contacts.data.slice(indexOfFirstContact, indexOfLastContact);
 
     const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
     const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));

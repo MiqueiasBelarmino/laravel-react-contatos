@@ -12,3 +12,10 @@ export type PageProps<
         user: User;
     };
 };
+ export interface Contact {
+    id: number;
+    name: string;
+    type: string;
+    latitude: number;
+    longitude: number;
+};

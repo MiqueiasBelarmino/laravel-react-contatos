@@ -1,11 +1,6 @@
 import { Button } from "@/Components/ui/button";
+import { Contact } from "@/types";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-
-interface Contact {
-    id: number;
-    name: string;
-    type: string;
-}
 
 interface ContactsListProps {
     contacts: Contact[];

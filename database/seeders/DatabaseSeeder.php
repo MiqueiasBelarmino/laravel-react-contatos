@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('miqueias')
         ]);
 
-        Contact::factory(10)->create([
+        Contact::factory(30)->create([
             'owner_id' => $user->id
         ]);
     }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
+use App\Http\Resources\ContactResource;
 
 class ContactController extends Controller
 {
@@ -13,8 +14,10 @@ class ContactController extends Controller
      */
     public function index()
     {
+        $query = Contact::query();
+        $contacts = $query->paginate(10);
         return inertia('Contact/Index', [
-            
+            'contacts' => ContactResource::collection($contacts)
         ]);
     }
 
