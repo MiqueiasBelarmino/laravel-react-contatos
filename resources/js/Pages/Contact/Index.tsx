@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
 import { Head, Link } from '@inertiajs/react';
 import ContactList from '@/Components/Contact/ContactList';
+import { Contact } from '@/types';
+import Map from '@/Components/Contact/Map';
 
 interface User {
     id: number;
@@ -38,7 +40,7 @@ export default function Index({ auth, contacts }: AuthProps) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            Here it is
+                            Here you can filter all your contacts
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 m-4">
                             <Card className="w-full">
@@ -89,7 +91,10 @@ export default function Index({ auth, contacts }: AuthProps) {
                                 </CardContent>
                             </Card>
                             <div className="w-full h-[400px] bg-muted rounded-lg flex items-center justify-center">
-                                <p className="text-muted-foreground">Google Map Placeholder</p>
+                                <Map positions={contacts.data.map((contact: Contact) => {
+                                        return { lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) } 
+                                    })} 
+                                />
                             </div>
                         </div>
                     </div>

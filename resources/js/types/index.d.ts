@@ -16,6 +16,6 @@ export type PageProps<
     id: number;
     name: string;
     type: string;
-    latitude: number;
-    longitude: number;
+    latitude: string;
+    longitude: string;
 };
