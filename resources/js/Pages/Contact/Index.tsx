@@ -1,13 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Button } from "@/Components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card"
-import { Input } from "@/Components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select"
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import { Button } from "@/Components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
+import { Input } from "@/Components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
+import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
 import ContactList from '@/Components/Contact/ContactList';
-import { Contact } from '@/types';
 
 interface User {
     id: number;
@@ -19,20 +17,12 @@ interface AuthProps {
     auth?: {
         user: User;
     };
-    contacts: any
+    contacts: any;
 }
+
 export default function Index({ auth, contacts }: AuthProps) {
-
-    const [currentPage, setCurrentPage] = useState(1);
-    const contactsPerPage = 5;
-    const totalPages = Math.ceil(contacts.data.length / contactsPerPage);
-
-    const indexOfLastContact = currentPage * contactsPerPage;
-    const indexOfFirstContact = indexOfLastContact - contactsPerPage;
-    const currentContacts = contacts.data.slice(indexOfFirstContact, indexOfLastContact);
-
-    const nextPage = () => setCurrentPage(prev => Math.min(prev + 1, totalPages));
-    const prevPage = () => setCurrentPage(prev => Math.max(prev - 1, 1));
+    const totalPages = contacts.meta.last_page;
+    const currentPage = contacts.meta.current_page;
 
     return (
         <AuthenticatedLayout
@@ -42,9 +32,7 @@ export default function Index({ auth, contacts }: AuthProps) {
                 </h2>
             }
         >
-
             <Head title="Contacts" />
-
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
@@ -78,13 +66,25 @@ export default function Index({ auth, contacts }: AuthProps) {
                                                 </Button>
                                             </div>
                                         </div>
-                                        <ContactList
-                                            contacts={currentContacts} 
-                                            currentPage={currentPage} 
-                                            totalPages={totalPages} 
-                                            nextPage={nextPage} 
-                                            prevPage={prevPage} 
-                                        />
+                                        <ContactList contacts={contacts.data} />
+
+                                        <div className="flex items-center justify-between">
+                                            <Link
+                                                href={contacts.links.prev || '#'}
+                                                className={`flex ${!contacts.links.prev ? 'pointer-events-none text-gray-400' : ''}`}
+                                            >
+                                                <ChevronLeft className="h-4 w-4 mr-2" /> Previous
+                                            </Link>
+                                            <span className="text-sm text-muted-foreground">
+                                                Page {currentPage} of {totalPages}
+                                            </span>
+                                            <Link
+                                                href={contacts.links.next || '#'}
+                                                className={`flex ${!contacts.links.next ? 'pointer-events-none text-gray-400' : ''}`}
+                                            >
+                                                Next <ChevronRight className="h-4 w-4 ml-2" />
+                                            </Link>
+                                        </div>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -92,11 +92,9 @@ export default function Index({ auth, contacts }: AuthProps) {
                                 <p className="text-muted-foreground">Google Map Placeholder</p>
                             </div>
                         </div>
-
                     </div>
                 </div>
-            </div >
-
-        </AuthenticatedLayout >
+            </div>
+        </AuthenticatedLayout>
     );
 }

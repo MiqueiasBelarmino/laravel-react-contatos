@@ -4,13 +4,9 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 interface ContactsListProps {
     contacts: Contact[];
-    currentPage: number;
-    totalPages: number;
-    nextPage: () => void;
-    prevPage: () => void;
 }
 
-export default function ContactList({ contacts, currentPage, totalPages, nextPage, prevPage }: ContactsListProps) {
+export default function ContactList({ contacts }: ContactsListProps) {
     return (
         <>
             <div className="border rounded-md h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
@@ -21,7 +17,7 @@ export default function ContactList({ contacts, currentPage, totalPages, nextPag
                     </div>
                 ))}
             </div>
-            <div className="flex items-center justify-between">
+            {/* <div className="flex items-center justify-between">
                 <Button variant="outline" size="sm" onClick={prevPage} disabled={currentPage === 1}>
                     <ChevronLeft className="h-4 w-4 mr-2" /> Previous
                 </Button>
@@ -29,7 +25,7 @@ export default function ContactList({ contacts, currentPage, totalPages, nextPag
                 <Button variant="outline" size="sm" onClick={nextPage} disabled={currentPage === totalPages}>
                     Next <ChevronRight className="h-4 w-4 ml-2" />
                 </Button>
-            </div>
+            </div> */}
         </>
     );
 }
