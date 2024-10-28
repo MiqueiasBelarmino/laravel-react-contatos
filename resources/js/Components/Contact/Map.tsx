@@ -5,13 +5,24 @@ const containerStyle = {
     height: '400px',
 };
 
+const center = {
+    lat: -3.745,
+    lng: -74.35,
+};
+
 interface MapProps {
     positions: { lat: number; lng: number; }[];
-    center?: { lat: number; lng:number; };
+    center?: { lat: number; lng: number; };
     zoom?: number;
 }
-
-export default function Map({ positions, center, zoom = 2 }: MapProps) {
+export default function Map({
+    positions,
+    center = {
+        lat: -3.745,
+        lng: -74.35,
+    },
+    zoom = 2
+}: MapProps) {
     return (
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
