@@ -29,6 +29,7 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
     const currentPage = contacts.meta.current_page;
     const [contactType, setContactType] = useState('all');
     const [filterValue, setFilterValue] = useState('');
+    const [selectedLocation, setSelectedLocation] = useState<{ lat: number, lng: number } | null>(null);
 
     filteringParams = filteringParams || {};
     const handleFilter = () => {
@@ -44,6 +45,10 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
         }
         router.get(route("contact.index"), filteringParams);
     }
+
+    const handleContactClick = (contact: Contact) => {
+        setSelectedLocation({ lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) });
+    };
 
     return (
         <AuthenticatedLayout
@@ -93,7 +98,7 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
                                                 </Button>
                                             </div>
                                         </div>
-                                        <ContactList contacts={contacts.data} />
+                                        <ContactList contacts={contacts.data} onContactClick={handleContactClick} />
 
                                         <div className="flex items-center justify-between">
                                             <Link
@@ -116,9 +121,11 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
                                 </CardContent>
                             </Card>
                             <div className="w-full h-[400px] bg-muted rounded-lg flex items-center justify-center">
-                                <Map positions={contacts.data.map((contact: Contact) => {
+                                <Map positions={selectedLocation ? [selectedLocation] : contacts.data.map((contact: Contact) => {
                                     return { lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) }
                                 })}
+
+                                    zoom={selectedLocation ? 15 : 4}
                                 />
                             </div>
                         </div>

@@ -1,13 +1,13 @@
-import { Button } from "@/Components/ui/button";
 import { Contact } from "@/types";
 import { Link, router } from "@inertiajs/react";
-import { ChevronLeft, ChevronRight, Delete, Edit, Trash } from 'lucide-react';
+import { Edit, Trash } from 'lucide-react';
 
 interface ContactsListProps {
     contacts: Contact[];
+    onContactClick: (contact: Contact) => void;
 }
 
-export default function ContactList({ contacts }: ContactsListProps) {
+export default function ContactList({ contacts, onContactClick}: ContactsListProps) {
 
     const handleDelete = (id: number) => {
         if (!window.confirm("Are you sure you want to delete the contact?")) {
@@ -20,7 +20,7 @@ export default function ContactList({ contacts }: ContactsListProps) {
         <>
             <div className="border rounded-md h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
                 {contacts.map((contact) => (
-                    <div key={contact.id} className="p-4 border-b last:border-b-0 hover:bg-muted/50 flex">
+                    <div key={contact.id} onClick={() => onContactClick(contact)} className="p-4 border-b last:border-b-0 hover:bg-muted/50 flex cursor-pointer">
                         <div>
                             <h3 className="font-semibold">{contact.name}</h3>
                             <p className="text-sm text-muted-foreground">{contact.type}</p>
