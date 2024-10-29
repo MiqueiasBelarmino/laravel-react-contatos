@@ -3,6 +3,7 @@
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ViaCepController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -14,6 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     Route::resource('contact', ContactController::class);
     Route::resource('user', UserController::class);
+    Route::get('/api/address', [ViaCepController::class, 'getAddress']);
 });
 
 Route::middleware('auth')->group(function () {

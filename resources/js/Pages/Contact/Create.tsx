@@ -4,8 +4,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { Textarea } from "@/Components/ui/textarea";
-import { Head, router } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
+import axios from 'axios';
+import { Search } from 'lucide-react';
 
 export default function CreateContact() {
   const [formData, setFormData] = useState({
@@ -21,7 +23,7 @@ export default function CreateContact() {
     latitude: '',
     longitude: '',
     information: '',
-    owner_id:'',
+    owner_id: '',
     type: 'personal',
   });
 
@@ -42,6 +44,29 @@ export default function CreateContact() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     router.post(route('contact.store'), formData);
+  };
+
+
+  const fetchAddress = async () => {
+    try {
+      const response = await axios.get(`/api/address`, {
+        params: { zip_code: formData.zip_code }
+      });
+      const address = response.data ?? {};
+      if (address?.uf) {
+        setFormData({
+          ...formData,
+          state: address.uf,
+        });
+      }
+      if (address?.localidade) {
+        setFormData({
+          ...formData,
+          city: address.localidade,
+        });
+      }
+    } catch (error) {
+    }
   };
 
   return (
@@ -136,13 +161,19 @@ export default function CreateContact() {
                       required
                     />
                   </div>
-                  <Input
-                    placeholder="Zip Code"
-                    name="zip_code"
-                    value={formData.zip_code}
-                    onChange={handleChange}
-                    required
-                  />
+                  <div className='flex items-center justify-center'>
+                    <Input
+                      placeholder="Zip Code"
+                      name="zip_code"
+                      value={formData.zip_code}
+                      onChange={handleChange}
+                      required
+                    />
+                    <Button variant="secondary" type="button" onClick={() => fetchAddress()}>
+                      <Search className="h-4 w-4" />
+                      <span className="sr-only">search</span>
+                    </Button>
+                  </div>
                   <div className="flex gap-4">
                     <Input
                       placeholder="Latitude"
