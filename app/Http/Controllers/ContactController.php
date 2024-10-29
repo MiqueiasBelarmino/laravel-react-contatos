@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
+use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
@@ -26,13 +27,12 @@ class ContactController extends Controller
                 $q->where("name", "LIKE", "%{$filterValue}%")
                     ->orWhere("cpf", "LIKE", "%{$filterValue}%");
             });
-            
         }
 
         if (request("type_to_filter") && request("type_to_filter") != "all") {
-            $query->where("type", "=", request("type_to_filter"));            
+            $query->where("type", "=", request("type_to_filter"));
         }
-        
+
         $contacts = $query->orderBy($sortField, $sortDirection)->paginate(10);
         return inertia('Contact/Index', [
             'contacts' => ContactResource::collection($contacts),
@@ -45,7 +45,7 @@ class ContactController extends Controller
      */
     public function create()
     {
-        //
+        return inertia('Contact/Create');
     }
 
     /**
@@ -53,8 +53,14 @@ class ContactController extends Controller
      */
     public function store(StoreContactRequest $request)
     {
-        //
+        $data = $request->validated();
+        $data['owner_id'] = Auth::id();
+
+        Contact::create($data);
+
+        return to_route("contact.index");
     }
+
 
     /**
      * Display the specified resource.

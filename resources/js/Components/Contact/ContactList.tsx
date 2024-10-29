@@ -26,6 +26,10 @@ export default function ContactList({ contacts }: ContactsListProps) {
                             <p className="text-sm text-muted-foreground">{contact.type}</p>
                         </div>
                         <div className='flex ml-auto'>
+                            <Link href={route("contact.edit", contact.id)}>
+                                <Edit className="h-4 w-4" />
+                                <span className="sr-only">Edit</span>
+                            </Link>
                             <Link href={''} onClick={() => handleDelete(contact.id)}>
                                 <Trash className="h-4 w-4 text-red-600" />
                                 <span className="sr-only">Edit</span>

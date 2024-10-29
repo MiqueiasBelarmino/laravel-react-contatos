@@ -60,10 +60,12 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900 flex items-center justify-center">
                             Here you can filter all your contacts.
-                            <Button variant="outline" onClick={() => route('contact.create')} className='ml-auto'>
-                                <Plus className="h-4 w-4" />
-                                <span className="sr-only">Create</span>
-                            </Button>
+                            <Link
+                                href={route("contact.create")}
+                                className="ml-auto bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+                            >
+                                Add new
+                            </Link>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 m-4">
                             <Card className="w-full">

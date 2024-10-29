@@ -11,7 +11,7 @@ class StoreContactRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class StoreContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => 'required|string|max:255',
+            'cpf' => 'required|string|size:11|unique:contacts',
+            'phone' => 'required|string|max:15',
+            'street' => 'required|string|max:255',
+            'street_number' => 'required|string|max:10',
+            'neighborhood' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|size:2',
+            'zip_code' => 'required|string|size:8',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+            'information' => 'nullable|string|max:255',
+            'type' => 'required',
         ];
     }
 }
