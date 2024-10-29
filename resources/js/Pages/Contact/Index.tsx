@@ -3,7 +3,7 @@ import { Button } from "@/Components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search } from 'lucide-react';
 import { Head, Link, router } from '@inertiajs/react';
 import ContactList from '@/Components/Contact/ContactList';
 import { Contact } from '@/types';
@@ -37,7 +37,7 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
         } else {
             delete filteringParams['filter'];
         }
-        if(contactType) {
+        if (contactType) {
             filteringParams['type_to_filter'] = contactType;
         } else {
             delete filteringParams['type_to_filter'];
@@ -58,8 +58,12 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            Here you can filter all your contacts
+                        <div className="p-6 text-gray-900 flex items-center justify-center">
+                            Here you can filter all your contacts.
+                            <Button variant="outline" onClick={() => route('contact.create')} className='ml-auto'>
+                                <Plus className="h-4 w-4" />
+                                <span className="sr-only">Create</span>
+                            </Button>
                         </div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 m-4">
                             <Card className="w-full">
