@@ -37,7 +37,11 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
         } else {
             delete filteringParams['filter'];
         }
-
+        if(contactType) {
+            filteringParams['type_to_filter'] = contactType;
+        } else {
+            delete filteringParams['type_to_filter'];
+        }
         router.get(route("contact.index"), filteringParams);
     }
 
@@ -67,7 +71,7 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
                                         <div className="flex flex-col sm:flex-row gap-4">
                                             <Select onValueChange={setContactType}>
                                                 <SelectTrigger className="w-full sm:w-[180px]">
-                                                    <SelectValue placeholder="Tipo de contato" />
+                                                    <SelectValue placeholder="Type" />
                                                 </SelectTrigger>
                                                 <SelectContent>
                                                     <SelectItem value="all">All</SelectItem>
@@ -76,7 +80,7 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
                                                 </SelectContent>
                                             </Select>
                                             <div className="flex-grow flex gap-2">
-                                                <Input placeholder="Buscar" type='text' className="flex-grow" onChange={e => setFilterValue(e.target.value)} />
+                                                <Input placeholder="Name or CPF" type='text' defaultValue={filteringParams.filter} className="flex-grow" onChange={e => setFilterValue(e.target.value)} />
                                                 <Button variant="outline" onClick={handleFilter}>
                                                     <Search className="h-4 w-4" />
                                                     <span className="sr-only">Search</span>

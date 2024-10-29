@@ -15,6 +15,10 @@ class ContactController extends Controller
     public function index()
     {
         $query = Contact::query();
+
+        $sortField = request("sort_field", "name");
+        $sortDirection = request("sort_direction", "ASC");
+
         if (request("filter")) {
             $filterValue = request("filter");
 
@@ -24,8 +28,12 @@ class ContactController extends Controller
             });
             
         }
+
+        if (request("type_to_filter") && request("type_to_filter") != "all") {
+            $query->where("type", "=", request("type_to_filter"));            
+        }
         
-        $contacts = $query->paginate(10);
+        $contacts = $query->orderBy($sortField, $sortDirection)->paginate(10);
         return inertia('Contact/Index', [
             'contacts' => ContactResource::collection($contacts),
             'filteringParams' => request()->query() ?: null
