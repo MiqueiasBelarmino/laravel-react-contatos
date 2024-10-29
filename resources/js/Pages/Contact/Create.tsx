@@ -8,6 +8,7 @@ import { Head, Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import axios from 'axios';
 import { Search } from 'lucide-react';
+import validateCPF from '@/helpers/validate-cpf';
 
 export default function CreateContact() {
   const [formData, setFormData] = useState({
@@ -25,11 +26,22 @@ export default function CreateContact() {
     type: 'personal',
   });
 
+  const [isCpfValid, setIsCpfValid] = useState(true);
+
   const handleChange = (e: any) => {
+    const value: string = e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
+
+    if(e.target.name == "cpf"){
+      if(value.trim().length >0){
+        setIsCpfValid(validateCPF(e.target.value));
+      } else {
+        setIsCpfValid(true);
+      }
+    }
   };
 
   const handleTypeChange = (value: any) => {
@@ -106,10 +118,11 @@ export default function CreateContact() {
                     required
                   />
                   <Input
-                    placeholder="CPF"
+                    placeholder="CPF (only numbers)"
                     name="cpf"
                     value={formData.cpf}
                     onChange={handleChange}
+                    className={`${isCpfValid? '':'bg-red-300'}`}
                     required
                   />
                   <Input
