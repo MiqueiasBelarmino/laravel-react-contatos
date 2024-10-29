@@ -31,8 +31,6 @@ class StoreContactRequest extends FormRequest
             'city' => 'required|string|max:255',
             'state' => 'required|string|size:2',
             'zip_code' => 'required|string|size:8',
-            'latitude' => 'required|numeric|between:-90,90',
-            'longitude' => 'required|numeric|between:-180,180',
             'information' => 'nullable|string|max:255',
             'type' => 'required',
         ];
