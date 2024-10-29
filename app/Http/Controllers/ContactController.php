@@ -67,7 +67,7 @@ class ContactController extends Controller
 
 
         if (!empty($data['street'])) { 
-            $coordinates = $this->geolocationService->getCoordinates($data['street'].' '.$data['street_number'].', '.$data['neighborhood'].', '.$data['city'].' - '.$data['uf']);
+            $coordinates = $this->geolocationService->getCoordinates($data['street'].' '.$data['street_number'].', '.$data['neighborhood'].', '.$data['city'].' - '.$data['state']);
             if ($coordinates) {
                 $data['latitude'] = $coordinates['latitude'];
                 $data['longitude'] = $coordinates['longitude'];
