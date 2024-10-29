@@ -6,10 +6,19 @@ use App\Models\Contact;
 use App\Http\Requests\StoreContactRequest;
 use App\Http\Requests\UpdateContactRequest;
 use App\Http\Resources\ContactResource;
+use App\Services\GeolocationService;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
+
+    protected $geolocationService;
+
+    public function __construct(GeolocationService $geolocationService)
+    {
+        $this->geolocationService = $geolocationService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -55,6 +64,15 @@ class ContactController extends Controller
     {
         $data = $request->validated();
         $data['owner_id'] = Auth::id();
+
+
+        if (!empty($data['street'])) { 
+            $coordinates = $this->geolocationService->getCoordinates($data['street'].' '.$data['street_number'].', '.$data['neighborhood'].', '.$data['city'].' - '.$data['uf']);
+            if ($coordinates) {
+                $data['latitude'] = $coordinates['latitude'];
+                $data['longitude'] = $coordinates['longitude'];
+            }
+        }
 
         Contact::create($data);
 

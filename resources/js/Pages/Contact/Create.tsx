@@ -20,8 +20,6 @@ export default function CreateContact() {
     city: '',
     state: '',
     zip_code: '',
-    latitude: '',
-    longitude: '',
     information: '',
     owner_id: '',
     type: 'personal',
@@ -63,6 +61,18 @@ export default function CreateContact() {
         setFormData({
           ...formData,
           city: address.localidade,
+        });
+      }
+      if (address?.logradouro) {
+        setFormData({
+          ...formData,
+          street: address.logradouro,
+        });
+      }
+      if (address?.bairro) {
+        setFormData({
+          ...formData,
+          neighborhood: address.bairro,
         });
       }
     } catch (error) {
@@ -173,22 +183,6 @@ export default function CreateContact() {
                       <Search className="h-4 w-4" />
                       <span className="sr-only">search</span>
                     </Button>
-                  </div>
-                  <div className="flex gap-4">
-                    <Input
-                      placeholder="Latitude"
-                      name="latitude"
-                      value={formData.latitude}
-                      onChange={handleChange}
-                      required
-                    />
-                    <Input
-                      placeholder="Longitude"
-                      name="longitude"
-                      value={formData.longitude}
-                      onChange={handleChange}
-                      required
-                    />
                   </div>
                   <Textarea
                     placeholder="Additional Information"
