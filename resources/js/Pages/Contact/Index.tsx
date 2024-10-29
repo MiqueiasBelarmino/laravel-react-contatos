@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Input } from "@/Components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select";
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
 import ContactList from '@/Components/Contact/ContactList';
 import { Contact } from '@/types';
 import Map from '@/Components/Contact/Map';
+import { useState } from 'react';
 
 interface User {
     id: number;
@@ -15,16 +16,30 @@ interface User {
     email: string;
 }
 
-interface AuthProps {
+interface ContactProps {
     auth?: {
         user: User;
     };
     contacts: any;
+    filteringParams: any;
 }
 
-export default function Index({ auth, contacts }: AuthProps) {
+export default function Index({ auth, contacts, filteringParams = null }: ContactProps) {
     const totalPages = contacts.meta.last_page;
     const currentPage = contacts.meta.current_page;
+    const [contactType, setContactType] = useState('all');
+    const [filterValue, setFilterValue] = useState('');
+
+    filteringParams = filteringParams || {};
+    const handleFilter = () => {
+        if (filterValue) {
+            filteringParams['filter'] = filterValue;
+        } else {
+            delete filteringParams['filter'];
+        }
+
+        router.get(route("contact.index"), filteringParams);
+    }
 
     return (
         <AuthenticatedLayout
@@ -50,7 +65,7 @@ export default function Index({ auth, contacts }: AuthProps) {
                                 <CardContent>
                                     <div className="space-y-4">
                                         <div className="flex flex-col sm:flex-row gap-4">
-                                            <Select>
+                                            <Select onValueChange={setContactType}>
                                                 <SelectTrigger className="w-full sm:w-[180px]">
                                                     <SelectValue placeholder="Tipo de contato" />
                                                 </SelectTrigger>
@@ -61,8 +76,8 @@ export default function Index({ auth, contacts }: AuthProps) {
                                                 </SelectContent>
                                             </Select>
                                             <div className="flex-grow flex gap-2">
-                                                <Input placeholder="Buscar" className="flex-grow" />
-                                                <Button variant="outline">
+                                                <Input placeholder="Buscar" type='text' className="flex-grow" onChange={e => setFilterValue(e.target.value)} />
+                                                <Button variant="outline" onClick={handleFilter}>
                                                     <Search className="h-4 w-4" />
                                                     <span className="sr-only">Search</span>
                                                 </Button>
@@ -92,8 +107,8 @@ export default function Index({ auth, contacts }: AuthProps) {
                             </Card>
                             <div className="w-full h-[400px] bg-muted rounded-lg flex items-center justify-center">
                                 <Map positions={contacts.data.map((contact: Contact) => {
-                                        return { lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) } 
-                                    })} 
+                                    return { lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) }
+                                })}
                                 />
                             </div>
                         </div>

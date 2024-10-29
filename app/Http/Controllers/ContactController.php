@@ -15,9 +15,20 @@ class ContactController extends Controller
     public function index()
     {
         $query = Contact::query();
+        if (request("filter")) {
+            $filterValue = request("filter");
+
+            $query->where(function ($q) use ($filterValue) {
+                $q->where("name", "LIKE", "%{$filterValue}%")
+                    ->orWhere("cpf", "LIKE", "%{$filterValue}%");
+            });
+            
+        }
+        
         $contacts = $query->paginate(10);
         return inertia('Contact/Index', [
-            'contacts' => ContactResource::collection($contacts)
+            'contacts' => ContactResource::collection($contacts),
+            'filteringParams' => request()->query() ?: null
         ]);
     }
 

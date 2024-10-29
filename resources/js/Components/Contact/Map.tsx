@@ -27,7 +27,7 @@ export default function Map({
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={center}
+                center={positions[0]??center}
                 zoom={zoom}
             >
                 {
