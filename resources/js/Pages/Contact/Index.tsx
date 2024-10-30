@@ -22,9 +22,10 @@ interface ContactProps {
     };
     contacts: any;
     filteringParams: any;
+    success: any;
 }
 
-export default function Index({ auth, contacts, filteringParams = null }: ContactProps) {
+export default function Index({ auth, contacts, filteringParams = null, success}: ContactProps) {
     const totalPages = contacts.meta.last_page;
     const currentPage = contacts.meta.current_page;
     const [contactType, setContactType] = useState('all');
@@ -63,6 +64,11 @@ export default function Index({ auth, contacts, filteringParams = null }: Contac
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                    {success && (
+                        <div className="bg-emerald-500 py-2 px-4 text-white rounded mb-4">
+                        {success}
+                        </div>
+                    )}
                         <div className="p-6 text-gray-900 flex items-center justify-center">
                             Here you can filter all your contacts.
                             <Link

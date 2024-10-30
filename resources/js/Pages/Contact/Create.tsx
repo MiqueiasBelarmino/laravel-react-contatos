@@ -204,7 +204,10 @@ export default function CreateContact() {
                     onChange={handleChange}
                     className="mt-2"
                   />
-                  <Button type="submit" variant="outline" className="w-full mt-4">
+                  <Button type="submit" variant="outline" 
+                      className="w-full ml-auto bg-emerald-500 py-1 px-3 text-white rounded shadow transition-all hover:bg-emerald-600"
+
+                  >
                     Save Contact
                   </Button>
                 </form>

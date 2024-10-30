@@ -45,7 +45,8 @@ class ContactController extends Controller
         $contacts = $query->orderBy($sortField, $sortDirection)->paginate(10);
         return inertia('Contact/Index', [
             'contacts' => ContactResource::collection($contacts),
-            'filteringParams' => request()->query() ?: null
+            'filteringParams' => request()->query() ?: null,
+            'success' => session('success'),
         ]);
     }
 
@@ -109,6 +110,7 @@ class ContactController extends Controller
      */
     public function destroy(Contact $contact)
     {
-        //
+        $contact->delete();
+        return to_route('contact.index')->with('success','Contact deleted successfully');
     }
 }

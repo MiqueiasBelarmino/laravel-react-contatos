@@ -7,14 +7,14 @@ interface ContactsListProps {
     onContactClick: (contact: Contact) => void;
 }
 
-export default function ContactList({ contacts, onContactClick}: ContactsListProps) {
+export default function ContactList({ contacts, onContactClick }: ContactsListProps) {
 
     const handleDelete = (id: number) => {
         if (!window.confirm("Are you sure you want to delete the contact?")) {
-          return;
+            return;
         }
         router.delete(route("contact.destroy", id));
-      };
+    };
 
     return (
         <>
@@ -30,10 +30,13 @@ export default function ContactList({ contacts, onContactClick}: ContactsListPro
                                 <Edit className="h-4 w-4" />
                                 <span className="sr-only">Edit</span>
                             </Link>
-                            <Link href={''} onClick={() => handleDelete(contact.id)}>
+                            <button onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(contact.id);
+                            }} className="ml-2">
                                 <Trash className="h-4 w-4 text-red-600" />
-                                <span className="sr-only">Edit</span>
-                            </Link>
+                                <span className="sr-only">Delete</span>
+                            </button>
                         </div>
                     </div>
                 ))}
