@@ -48,7 +48,9 @@ export default function Index({ auth, contacts, filteringParams = null, success}
     }
 
     const handleContactClick = (contact: Contact) => {
-        setSelectedLocation({ lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) });
+        const lat = parseFloat(contact.latitude);
+        const lng = parseFloat(contact.longitude);
+        setSelectedLocation({ lat, lng});
     };
 
     return (
@@ -131,7 +133,7 @@ export default function Index({ auth, contacts, filteringParams = null, success}
                                     return { lat: parseFloat(contact.latitude), lng: parseFloat(contact.longitude) }
                                 })}
 
-                                    zoom={selectedLocation ? 15 : 4}
+                                    zoom={!isNaN(parseFloat(`${selectedLocation?.lat}`)) ? 15 : 4}
                                 />
                             </div>
                         </div>

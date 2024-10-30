@@ -23,11 +23,18 @@ export default function Map({
     },
     zoom = 2
 }: MapProps) {
+
+    const mapCenter = positions[0] && positions[0].lat !== undefined 
+        && positions[0].lng !== undefined 
+        && (!isNaN(positions[0].lat)  && !isNaN(positions[0].lng))
+            ? positions[0]
+            : center;
+
     return (
         <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
                 mapContainerStyle={containerStyle}
-                center={positions[0]??center}
+                center={mapCenter}
                 zoom={zoom}
             >
                 {
