@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Contact;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,11 +54,16 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        Contact::where('owner_id', $user->id)->delete();
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
+        
+        if ($request->expectsJson()) {
+            return response()->json(['message' => 'Account deleted successfully']);
+        }
+    
         return Redirect::to('/');
     }
 }
